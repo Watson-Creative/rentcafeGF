@@ -31,14 +31,14 @@ function after_submission_handler( $form ) {
       $formData = $form;
 
       // echo $formData[1] . '<br>'; //firstName
-      $leadString = $url . '&propertyCode=' . $propCode . '&username='. $un .'&password=' . $pw . '&addr1=' . urlencode($addr) . '&city=' . $city . '&state=' . $state . '&zipCode=' . $zip . '&source=' . urlencode($lead) . 'firstName=' . $formData[1] . '&lastName=' . $formData[2] . '&email=' . $formData[3] . '&message=' . urlencode($formData[4]) . '&phone=' . preg_replace("/[^0-9,.]/", "", $formData[5]);
-      echo $leadString;
+      $leadString = $url . '&propertyCode=' . $propCode . '&username='. $un .'&password=' . $pw . '&addr1=' . urlencode($addr) . '&city=' . $city . '&state=' . $state . '&zipCode=' . $zip . '&source=' . urlencode($lead) . '&firstName=' . $formData[1] . '&lastName=' . $formData[2] . '&email=' . $formData[3] . '&message=' . urlencode($formData[4]) . '&phone=' . preg_replace("/[^0-9,.]/", "", $formData[5]);
+      // echo $leadString;
       // echo $formData[2] . '<br>'; //lastName
       // echo $formData[3] . '<br>'; //email
       // echo urlencode($formData[4]) . '<br>'; //message
       // echo preg_replace("/[^0-9,.]/", "", $formData[5]) . '<br>';
       // echo $leadString . '<br>';
-      // $info = wp_remote_get( $leadString );//makes GET request
+      $info = wp_remote_get( $leadString );//makes GET request
       // print_r($info);
    }
 }
@@ -100,7 +100,7 @@ if ( is_admin() ){ // admin actions
 function rentcafe_create_menu() {
 
    //create new top-level menu
-   add_menu_page('WC Content Freeze Settings', 'Freeze Settings', 'administrator', __FILE__, 'rentcafe_settings_page', plugins_url('img/WC_Brand-20.png', __FILE__ ) );
+   add_menu_page('RentCafe Integration', 'RentCafe Integration', 'administrator', __FILE__, 'rentcafe_settings_page', plugins_url('rc-icon.png', __FILE__ ) );
 
    //call register settings function
    add_action( 'admin_init', 'register_rentcafe_settings' );
@@ -131,8 +131,9 @@ function rentcafe_settings_page() {
 ?>
 
 <div class="wrap">
-   <img id="watson-branding" src="<?php echo plugins_url('img/WC_Brand_Signature.png', __FILE__ ); ?>" style="max-width:400px;">
+   <img id="watson-branding" src="<?php echo plugins_url('WC_Brand_Signature.png', __FILE__ ); ?>" style="max-width:400px;">
    <h1>Gravity Forms -> RentCafe Integration</h1>
+   <p>make changes to these settings with extreme caution.</p>
    <form method="post" action="options.php"> 
       <?php 
       settings_fields( 'rentcafe_option-group' );
