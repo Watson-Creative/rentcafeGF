@@ -30,4 +30,51 @@ function after_submission_handler( $form ) {
 }
 }
 
+
+
+// Add default vaules on initial load
+register_activation_hook(__FILE__,'create_default_rentcafe_values');
+
+function create_default_rentcafe_values() {
+   if ( get_option( 'freeze_delay' ) == false ) { 
+            add_option("freeze_delay", $freeze_delay_default); 
+         }
+   }
+
+////////////////////////////////////////   SETTINGS   ////////////////////////////////////////
+
+if ( is_admin() ){ // admin actions
+  add_action( 'admin_menu', 'rentcafe_create_menu' );
+  add_action( 'admin_init', 'register_rentcafe_settings' );
+}
+
+
+function rentcafe_create_menu() {
+
+   //create new top-level menu
+   add_menu_page('WC Content Freeze Settings', 'Freeze Settings', 'administrator', __FILE__, 'rentcafe_settings_page', plugins_url('img/WC_Brand-20.png', __FILE__ ) );
+
+   //call register settings function
+   add_action( 'admin_init', 'register_rentcafe_settings' );
+}
+
+
+function register_rentcafe_settings() { 
+  register_setting( 'rentcafe_option-group', 'rentcafe_api_url' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_property_code' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_username' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_password' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_lead_source' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_address' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_city' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_state' );
+  register_setting( 'rentcafe_option-group', 'rentcafe_zip' );
+}
+//allow customization of:
+// api URL
+// propertyCode
+// username
+// password
+// source description
+// property address (addr1, city, state, zip)
 ?>
