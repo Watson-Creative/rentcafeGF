@@ -16,17 +16,30 @@
 add_action( 'gform_after_submission', 'after_submission_handler' );
 function after_submission_handler( $form ) {
    if( class_exists ('GFAPI')) {
-       $formData = $form;
+//Get Plugin Options
+      $url = get_option( 'rentcafe_api_url' );
+      $propCode = get_option( 'rentcafe_property_code' );
+      $un = get_option( 'rentcafe_username' );
+      $pw = get_option( 'rentcafe_password' );
+      $lead = get_option( 'rentcafe_lead_source' );
+      $addr = get_option( 'rentcafe_address' );
+      $city = get_option( 'rentcafe_city' );
+      $state = get_option( 'rentcafe_state' );
+      $zip = get_option( 'rentcafe_zip' );
 
-       echo $formData[1] . '<br>'; //firstName
-      $leadString = 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=lead&propertyCode=p0647361&username=apileadsuser@greystar.com&password=rentcafe1&addr1=2220%20NW%20Front%20Ave&city=Portland&state=OR&zipCode=97209&source=Website%20contact%20form&' . 'firstName=' . $formData[1] . '&lastName=' . $formData[2] . '&email=' . $formData[3] . '&message=' . urlencode($formData[4]) . '&phone=' . preg_replace("/[^0-9,.]/", "", $formData[5]);
-       echo $formData[2] . '<br>'; //lastName
-       echo $formData[3] . '<br>'; //email
-       echo urlencode($formData[4]) . '<br>'; //message
-       echo preg_replace("/[^0-9,.]/", "", $formData[5]) . '<br>';
-       echo $leadString . '<br>';
-       $info = wp_remote_get( $leadString );//makes GET request
-       print_r($info);
+//Get Form Data
+      $formData = $form;
+
+      // echo $formData[1] . '<br>'; //firstName
+      $leadString = $url . '&propertyCode=' . $propCode . '&username='. $un .'&password=' . $pw . '&addr1=' . urlencode($addr) . '&city=' . $city . '&state=' . $state . '&zipCode=' . $zip . '&source=' . urlencode($lead) . 'firstName=' . $formData[1] . '&lastName=' . $formData[2] . '&email=' . $formData[3] . '&message=' . urlencode($formData[4]) . '&phone=' . preg_replace("/[^0-9,.]/", "", $formData[5]);
+      echo $leadString;
+      // echo $formData[2] . '<br>'; //lastName
+      // echo $formData[3] . '<br>'; //email
+      // echo urlencode($formData[4]) . '<br>'; //message
+      // echo preg_replace("/[^0-9,.]/", "", $formData[5]) . '<br>';
+      // echo $leadString . '<br>';
+      // $info = wp_remote_get( $leadString );//makes GET request
+      // print_r($info);
    }
 }
 
@@ -36,6 +49,17 @@ function after_submission_handler( $form ) {
 register_activation_hook(__FILE__,'create_default_rentcafe_values');
 
 function create_default_rentcafe_values() {
+   // DEFAULT CREDENTIALS
+   $rentcafe_api_url_default = 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=lead';
+   $rentcafe_property_code_default = 'p0647361';
+   $rentcafe_username_default = 'apileadsuser@greystar.com';
+   $rentcafe_password_default = 'rentcafe1';
+   $rentcafe_lead_source_default = 'Website contact form'; //encode
+   $rentcafe_address_default = '2220 NW Front Ave'; //encode
+   $rentcafe_city_default = 'Portland';
+   $rentcafe_state_default = 'OR';
+   $rentcafe_zip_default = '97209';
+
    if ( get_option( 'rentcafe_api_url' ) == false ) { 
             add_option("rentcafe_api_url", $rentcafe_api_url_default); 
       }
@@ -147,7 +171,7 @@ function rentcafe_settings_page() {
         </tr>
 
         <tr valign="top">
-           <th scope="row">Property State</th>
+           <th scope="row">Property State (XX)</th>
            <td><input type="text" step="1" name="rentcafe_state" value="<?php echo esc_attr( get_option('rentcafe_state') ); ?>" /></td>
         </tr>
 
@@ -159,7 +183,7 @@ function rentcafe_settings_page() {
     </table>
 
     <?php
-      submit_button('Save Changes and Reset Timer');
+      submit_button('Save Changes');
       ?>
    </form>
 
