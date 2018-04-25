@@ -3,8 +3,8 @@
    Plugin Name: Gravity Forms to Rent Cafe
    Plugin URI: https://github.com/Watson-Creative/rentcafeGF
    GitHub Plugin URI: https://github.com/Watson-Creative/rentcafeGF
-   description: AAdd hook to RentCafe from Gravity Form submission for Rivage Portland
-   Version: 1.0
+   description: Add hook to RentCafe from Gravity Form submission for Rivage Portland
+   Version: 1.0.1
    Author: Alex Tryon
    Author URI: http://www.alextryonpdx.com
    License: GPL2
